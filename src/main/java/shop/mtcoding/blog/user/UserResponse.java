@@ -6,9 +6,24 @@ import lombok.Data;
 public class UserResponse {
 
     @Data
+    public static class IdTokenDTO {
+        private Integer id;
+        private String username;
+        private String idToken;
+
+
+        public IdTokenDTO(User user, String idToken) {
+            this.id = user.getId();
+            this.username = user.getUsername();
+            this.idToken = idToken;
+        }
+    }
+
+    @Data
     public static class TokenDTO {
         private String accessToken;
         private String refreshToken;
+
 
         @Builder
         public TokenDTO(String accessToken, String refreshToken) {

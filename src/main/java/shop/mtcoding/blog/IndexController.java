@@ -23,7 +23,8 @@ public class IndexController {
 
     @PostMapping("/oauth/login")
     public ResponseEntity<?> login(@RequestBody String idToken) {
-        userService.카카오로그인(idToken);
-        return Resp.ok(idToken);
+        System.out.println("idToken 잘받음 : " + idToken);
+        var respDTO = userService.카카오로그인(idToken);
+        return Resp.ok(respDTO);
     }
 }

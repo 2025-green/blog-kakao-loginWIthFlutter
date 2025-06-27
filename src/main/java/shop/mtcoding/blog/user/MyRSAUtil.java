@@ -13,6 +13,7 @@ import java.util.Base64;
 public class MyRSAUtil {
 
     public static JwtKeySet downloadRSAKey() {
+        // 만약에 있으면 혹은 없으면
         String jwtUrl = "https://kauth.kakao.com/.well-known/jwks.json"; // ← 실제 주소로 교체
 
         RestTemplate restTemplate = new RestTemplate();
@@ -53,7 +54,7 @@ public class MyRSAUtil {
             } else {
                 throw new RuntimeException("id토큰 검증 실패");
             }
-        } catch (Exception ex) {
+        } catch (Exception ex) { // 공개키가 카카오에서 변경됐을때!!
             throw new RuntimeException(ex.getMessage());
         }
     }

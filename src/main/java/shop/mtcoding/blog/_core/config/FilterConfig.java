@@ -13,6 +13,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilter() {
+        System.out.println("corsFilter 동작");
         FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new CorsFilter());
         registrationBean.addUrlPatterns("/*"); // 모든 요청에 적용
@@ -22,6 +23,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean<AuthorizationFilter> authorizationFilter() {
+        System.out.println("authorizationFilter 동작");
         FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthorizationFilter());
         registrationBean.addUrlPatterns("/s/*"); // 모든 요청에 적용
@@ -31,6 +33,7 @@ public class FilterConfig {
 
     @Bean
     public FilterRegistrationBean<LogFilter> loggingFilter() {
+        System.out.println("loggingFilter 동작");
         FilterRegistrationBean<LogFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new LogFilter());
         registrationBean.addUrlPatterns("/*"); // 모든 요청에 적용

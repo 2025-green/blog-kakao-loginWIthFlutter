@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 public class AuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        System.out.println("카카오톡 로그인이면 실행되면 안됨 주소가 /s 일때만 실행됨");
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 

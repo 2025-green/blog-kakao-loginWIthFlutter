@@ -12,6 +12,7 @@ import shop.mtcoding.blog._core.util.JwtUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 // 비지니스로직, 트랜잭션처리, DTO 완료
 @RequiredArgsConstructor
@@ -76,16 +77,32 @@ public class UserService {
         return new UserResponse.DTO(userPS); // 리턴한 이유는 세션을 동기화해야해서!!
     } // 더티체킹 -> 상태가 변경되면 update을 날려요!!
 
-    public User 카카오로그인(String idToken) {
+    @Transactional
+    public UserResponse.IdTokenDTO 카카오로그인(String idToken) { // application context 담기
         // 1. 공개키 존재 확인 없으면 다운로드
         // 2. id Token 검증 (base64 디코딩, 서명검증)
         OAuthProfile oAuthProfile = MyRSAUtil.verify(idToken);
 
+        User user = null;
+
         // 3. 회원가입 유무 확인
+        Optional<User> userOP
+                = userRepository.findByUsername(ProviderType.KAKAO + "_" + oAuthProfile.getSub());
 
-        // 4. 안되있으면 강제 회원가입
+        if (userOP.isEmpty()) {
+            // 4. 안되있으면 강제 회원가입
+            user = User.builder()
+                    .username(ProviderType.KAKAO + "_" + oAuthProfile.getSub())
+                    .password(UUID.randomUUID().toString())
+                    .email(null)
+                    .provider(ProviderType.KAKAO)
+                    .build();
+            userRepository.save(user);
+        } else {
+            user = userOP.get();
+        }
 
-        // 5. 되어있다면 아무것도 안해도 됨
-        return null;
+
+        return new UserResponse.IdTokenDTO(user, idToken);
     }
 }
